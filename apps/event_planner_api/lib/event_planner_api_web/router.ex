@@ -1,12 +1,25 @@
 defmodule EventPlannerAPIWeb.Router do
   use EventPlannerAPIWeb, :router
 
+  pipeline :browser do
+    plug :accepts, ["html"]
+
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+  scope "/" do
+    pipe_through :browser # Use the default browser stack
+
+    # get "/swaggerui", OpenApiSpex.Plug.SwaggerUI, path: "/api/openapi"
+  end
+
   scope "/api", EventPlannerAPIWeb do
     pipe_through :api
+
+    resources "/events", EventPlannerAPIWeb.EventController
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
