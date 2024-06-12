@@ -58,7 +58,8 @@ defmodule EventPlannerAPI.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:open_api_spex, "~> 3.18"},
     ]
   end
 
@@ -70,6 +71,7 @@ defmodule EventPlannerAPI.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      "openapi.spec": "run -e 'OpenApiSpex.Plug.RenderSpec.spec!(EventPlannerAPIWeb.ApiSpec, file: \"priv/static/openapi.json\")'",
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind event_planner_api", "esbuild event_planner_api"],

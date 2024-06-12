@@ -23,7 +23,8 @@ defmodule EventPlannerAPIWeb.Endpoint do
     at: "/",
     from: :event_planner_api,
     gzip: false,
-    only: EventPlannerAPIWeb.static_paths()
+    only: ~w(css fonts images js favicon.ico robots.txt openapi.json)
+    # only: EventPlannerAPIWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

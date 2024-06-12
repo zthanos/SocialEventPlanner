@@ -15,4 +15,8 @@ defmodule EventPlanner do
   def hello do
     :world
   end
+
+  def create_social_event(args) do
+    {:ok, args}
+  end
 end
