@@ -1,7 +1,7 @@
 defmodule EventPlannerAPIWeb.EventController do
   use EventPlannerAPIWeb, :controller
   use OpenApiSpex.ControllerSpecs
-  # alias EventPlanner
+  alias EventPlanner
 
   alias EventPlannerAPIWeb.Schemas.{CreateSocialEventRequest, CreateSocialEventResponse}
 
@@ -26,18 +26,17 @@ defmodule EventPlannerAPIWeb.EventController do
       ok: {"User response", "application/json", CreateSocialEventResponse}
     ]
 
-  def create(_conn, %{"event" => event_params}) do
-    {:ok, event_params}
-    # case EventPlanner.create_social_event(event_params) do
-    #   :ok ->
-    #     conn
-    #     |> put_status(:created)
-    #     |> json(%{message: "Event created successfully"})
+  def create(conn, %{"event" => event_params}) do
+    case EventPlanner.create_social_event(event_params) do
+      :ok ->
+        conn
+        |> put_status(:created)
+        |> json(%{message: "Event created successfully"})
 
-    #   {:error, changeset} ->
-    #     conn
-    #     |> put_status(:unprocessable_entity)
-    #     |> json(%{errors: changeset})
-    # end
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{errors: changeset})
+    end
   end
 end

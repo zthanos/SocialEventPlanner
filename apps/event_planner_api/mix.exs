@@ -60,6 +60,7 @@ defmodule EventPlannerAPI.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
       {:open_api_spex, "~> 3.18"},
+      {:event_planner, in_umbrella: true}
     ]
   end
 
