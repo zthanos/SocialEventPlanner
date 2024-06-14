@@ -1,7 +1,6 @@
 defmodule EventPlanner.Commands.CreateSocialEvent do
   alias EventPlanner.Commands.{CreateSocialEvent}
 
-
   defstruct [
     :event_id,
     :title,
@@ -25,18 +24,22 @@ defmodule EventPlanner.Commands.CreateSocialEvent do
   validates(:point_of_interest, presence: true, by: &__MODULE__.validate_point_of_interest/2)
   validates(:event_type, presence: true)
   validates(:event_date, presence: [message: "Required field"])
-  validates(:duration, presence: [message: "Required field"], number: true )
-  validates :duration, presence: [message: "Duration is required"], number:  [is: true, message: "Duration must be a number"]
+  validates(:duration, presence: [message: "Required field"], number: true)
+
+  validates(:duration,
+    presence: [message: "Duration is required"],
+    number: [is: true, message: "Duration must be a number"]
+  )
 
   validates(:number_of_participants, presence: true, number: true)
 
   def validate_point_of_interest(raw, _) do
-    attrs = %{
-      title: raw[:title],
-      description: raw[:description],
-      latitude: raw[:latitude],
-      longitude: raw[:longitude]
-    }
+    attrs =
+      case raw do
+        nil -> %{}
+        _ -> raw
+      end
+
     poi = EventPlanner.PointOfInterest.new(attrs)
     Vex.valid?(poi)
   end

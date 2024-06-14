@@ -38,24 +38,22 @@ defmodule EventPlanner.SocialEventAggregate do
     }
   end
 
-  #state mofifiers
+  # state mofifiers
   def apply(%SocialEventAggregate{} = aggregate, %SocialEventCreated{} = event) do
     %SocialEventAggregate{
       aggregate
       | event_id: event.event_id,
-      title: event.title,
-      description: event.description,
-      point_of_interest: event.point_of_interest,
-      event_type: event.event_type,
-      event_date: event.event_date,
-      duration: event.duration,
-      number_of_participants: event.number_of_participants,
-      is_private: event.is_private,
-      logo_url: event.logo_url,
-      background_url: event.background_url,
-      participants: event.participants
+        title: event.title,
+        description: event.description,
+        point_of_interest: event.point_of_interest,
+        event_type: event.event_type,
+        event_date: event.event_date,
+        duration: event.duration,
+        number_of_participants: event.number_of_participants,
+        is_private: event.is_private,
+        logo_url: event.logo_url,
+        background_url: event.background_url,
+        participants: event.participants
     }
   end
-
-
 end

@@ -54,8 +54,8 @@ defmodule EventPlannerTest do
         duration: 180,
         numberOfParticipants: 50,
         is_private: false,
-        logoUrl: "https://example.com/logo.png",
-        backgroundUrl: "https://example.com/background.jpg"
+        logo_url: "https://example.com/logo.png",
+        background_url: "https://example.com/background.jpg"
       }
 
       # cmd = CreateSocialEvent.new(attrs)

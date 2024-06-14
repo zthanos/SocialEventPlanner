@@ -4,39 +4,50 @@ defmodule EventPlannerAPIWeb.EventController do
   alias EventPlanner
 
   alias EventPlannerAPIWeb.Schemas.{CreateSocialEventRequest, CreateSocialEventResponse}
+  alias OpenApiSpex.{Operation, Schema}
+  tags(["events"])
 
-  tags ["events"]
-  # security [%{}, %{"petstore_auth" => ["write:users", "read:users"]}]
-
-  operation :create,
+  operation(:create,
     summary: "Create social Event",
-    parameters: [
-      event_id: [in: :path, description: "Event id", type: :string, example: "0000000000000000"],
-      title: [in: :path, description: "Title", type: :string, example: "1001"],
-      description: [in: :path, description: "description", type: :string, example: "1001"],
-      event_date: [in: :path, description: "event_date", type: :string, example: "1001"],
-      event_type: [in: :path, description: "event_type", type: :string, example: "1001"],
-      is_private: [in: :path, description: "is_private", type: :string, example: "1001"],
-      logo_url: [in: :path, description: "logo_url", type: :string, example: "1001"],
-      background_url: [in: :path, description: "background_url", type: :string, example: "1001"],
-      number_of_participants: [in: :path, description: "number_of_participants", type: :string, example: 100]
-    ],
-    request_body: {"User params", "application/json", CreateSocialEventRequest},
-    responses: [
-      ok: {"User response", "application/json", CreateSocialEventResponse}
-    ]
+    request_body: {"Event params", "application/json", CreateSocialEventRequest},
+    responses: %{
+      201 =>
+        {"Created", "application/json",
+         %Schema{type: :object, properties: %{message: %Schema{type: :string}}}},
+      400 =>
+        {"Bad Request ", "application/json",
+         %Schema{type: :object, properties: %{errors: %Schema{type: :object}}}},
+      422 =>
+        {"Unprocessable Entity", "application/json",
+         %Schema{type: :object, properties: %{errors: %Schema{type: :object}}}}
+    }
+  )
 
-  def create(conn, %{"event" => event_params}) do
+  def create(conn, params) do
+    # Transform data if necessary (e.g., convert strings to dates)
+    event_params = prepare_event_params(params)
+
     case EventPlanner.create_social_event(event_params) do
-      :ok ->
+      {:ok, event} ->
         conn
         |> put_status(:created)
         |> json(%{message: "Event created successfully"})
 
-      {:error, changeset} ->
+      {:error, :invalid_command_attributes} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(:invalid_command_attributes)
+
+      {:error, reason} ->
         conn
         |> put_status(:unprocessable_entity)
-        |> json(%{errors: changeset})
+        |> json(reason)
     end
+  end
+
+  defp prepare_event_params(params) do
+    # Implement logic to convert data to the format expected by EventPlanner.create_social_event
+    # This might involve converting string dates to proper date format, etc.
+    params
   end
 end

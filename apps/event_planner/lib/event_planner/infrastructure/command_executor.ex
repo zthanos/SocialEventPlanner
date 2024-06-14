@@ -3,10 +3,9 @@ defmodule EventPlanner.Infrastructure.CommandExecutor do
 
   require Logger
 
-  @spec execute_command(any(), keyword()) :: {:ok, any()} | {:error, any()}
+
   def execute_command(cmd, opts \\ []) do
     Logger.debug("Executing command: #{inspect(cmd)}")
-
 
     case EventPlanner.App.dispatch(cmd, opts) do
       {:ok, item} ->

@@ -17,7 +17,7 @@ defmodule EventPlanner do
       execute_command(cmd, returning: :aggregate_state)
     else
       Logger.debug(inspect(Vex.errors(cmd)))
-      {:error, "Invalid command attributes"}
+      {:error, :invalid_command_attributes}
     end
   end
 
