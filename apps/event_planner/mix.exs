@@ -35,7 +35,8 @@ defmodule EventPlanner.MixProject do
       {:ecto_sql, "~> 3.11"},
       {:commanded, "~> 1.4"},
       {:commanded_eventstore_adapter, "~> 1.4"},
-      {:eventstore, "~> 1.4"}
+      {:eventstore, "~> 1.4"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 
