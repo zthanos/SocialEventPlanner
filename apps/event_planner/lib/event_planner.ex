@@ -1,18 +1,24 @@
 defmodule EventPlanner do
-  @moduledoc """
-  Documentation for `EventPlanner`.
-  """
+  alias EventPlanner.Commands.CreateSocialEvent
+  alias EventPlanner.Infrastructure.CommandExecution
+  alias EventPlanner.Infrastructure.CommandExecutor
+  require Logger
+  @behaviour CommandExecution
 
-  @doc """
-  Hello world.
+  defdelegate execute_command(cmd, opts), to: CommandExecutor
 
-  ## Examples
+  def create_social_event(attrs) do
+    cmd =
+      attrs
+      |> CreateSocialEvent.new()
+      |> CreateSocialEvent.generate_id()
 
-      iex> EventPlanner.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    if Vex.valid?(cmd) do
+      execute_command(cmd, returning: :aggregate_state)
+    else
+      Logger.debug(inspect(Vex.errors(cmd)))
+      {:error, :invalid_command_attributes}
+    end
   end
+
 end

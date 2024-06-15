@@ -19,6 +19,7 @@ config :commanded,
 
 config :vex,
   sources: [
+    EventPlanner.Support.Validators,
     Vex.Validators
   ]
 
